@@ -43,6 +43,7 @@ lwl-$(CONFIG_MACH_GUF_VINCELL) += imx53-guf-vincell.dtb.o imx53-guf-vincell-lt.d
 lwl-$(CONFIG_MACH_GW_VENTANA) += imx6q-gw54xx.dtb.o
 lwl-$(CONFIG_MACH_KAMSTRUP_MX7_CONCENTRATOR) += imx7d-flex-concentrator-mfg.dtb.o
 lwl-$(CONFIG_MACH_KARO_QSXP_ML81) += imx8mp-karo-qsxp-ml81-qsbase4.dtb.o
+lwl-$(CONFIG_MACH_KARO_TX8M_1610) += imx8mm-tx8m-1610-test.dtb.o
 lwl-$(CONFIG_MACH_KOENIGBAUER_ALPHAJET) += imx8mp-koenigbauer-alphajet.dtb.o
 lwl-$(CONFIG_MACH_KONTRON_SAMX6I) += imx6q-samx6i.dtb.o \
 					imx6dl-samx6i.dtb.o
