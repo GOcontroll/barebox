@@ -10,15 +10,37 @@
 	chosen {
 		environment-emmc {
 			compatible = "barebox,environment";
-			device-path = &usdhc1;
+			device-path = &env_sd1;
 		};
 	};
+};
+
+&ocotp {
+	barebox,provide-mac-address = <&fec1 0x640>;
 };
 
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
 	status = "okay";
+};
+
+&usdhc1 {
+	partitions {
+		compatible = "barebox,fixed-partitions";
+		#address-cells = <2>;
+		#size-cells = <2>;
+
+		partition@0 {
+			label = "barebox";
+			reg = <0x0 0x0 0x0 0x100000>;
+		};
+
+		env_sd1: partition@100000 {
+			label = "barebox-environment";
+			reg = <0x0 0x100000 0x0 0x100000>;
+		};
+	};
 };
 
 &iomuxc {
