@@ -15,10 +15,6 @@
 	};
 };
 
-&ocotp {
-	barebox,provide-mac-address = <&fec1 0x640>;
-};
-
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart3>;
@@ -26,19 +22,25 @@
 };
 
 &usdhc1 {
-	partitions {
+	partitions-boot0 {
 		compatible = "barebox,fixed-partitions";
-		#address-cells = <2>;
-		#size-cells = <2>;
+		#address-cells = <1>;
+		#size-cells = <1>;
 
 		partition@0 {
 			label = "barebox";
-			reg = <0x0 0x0 0x0 0x100000>;
+			reg = <0x0 0x200000>;
 		};
+	};
 
-		env_sd1: partition@100000 {
+	partitions {
+		compatible = "barebox,fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		env_sd1: partition@0 {
 			label = "barebox-environment";
-			reg = <0x0 0x100000 0x0 0x100000>;
+			reg = <0x0 0x100000>;
 		};
 	};
 };
