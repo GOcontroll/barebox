@@ -3,28 +3,18 @@
 #include <deep-probe.h>
 #include <init.h>
 #include <mach/imx/bbu.h>
+#include <mach/imx/imx8mm-regs.h>
 
 static int tx8m_1610_som_probe(struct device_d *dev)
 {
-	int emmc_bbu_flag = 0;
-        int sd_bbu_flag = 0;
+		__raw_writel(0x200u, MX8MM_IOMUXC_GPR_BASE_ADDR+4);
+		imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0", BBU_HANDLER_FLAG_DEFAULT);
 
-        if (bootsource_get() == BOOTSOURCE_MMC && bootsource_get_instance() == 1) {
-                of_device_enable_path("/chosen/environment-sd");
-                sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-        } else {
-                of_device_enable_path("/chosen/environment-emmc");
-                emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-        }
-
-        imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0", emmc_bbu_flag);
-        imx8m_bbu_internal_mmc_register_handler("SD", "/dev/mmc1.barebox", sd_bbu_flag);
-
-        return 0;
+		return 0;
 }
 
 static const struct of_device_id tx8m_1610_of_match[] = {
-	{ .compatible = "karo,tx8m-1610" },
+	{ .compatible = "karo,imx8mm-tx8m-1610" },
 	{ /* sentinel */ },
 };
 
@@ -34,3 +24,5 @@ static struct driver_d tx8m_1610_som_driver = {
 	.of_compatible = DRV_OF_COMPAT(tx8m_1610_of_match),
 };
 coredevice_platform_driver(tx8m_1610_som_driver);
+
+BAREBOX_DEEP_PROBE_ENABLE(tx8m_1610_of_match);
