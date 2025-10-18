@@ -14,12 +14,16 @@
 #include <mfd/bd71837.h>
 #include <mach/imx/xload.h>
 #include <soc/imx8m/ddr.h>
+#include <mach/imx/imx-gpio.h>
 
 #include "lowlevel.h"
 
 extern char __dtb_z_imx8mm_tx8m_1610_test_start[];
 
-#define UART_PAD_CTRL	MUX_PAD_CTRL(PAD_CTL_DSE_3P3V_45_OHM)
+#define UART_PAD_CTRL		MUX_PAD_CTRL(PAD_CTL_DSE_3P3V_45_OHM)
+#define RESET_OUT_PAD_CTRL	MUX_PAD_CTRL(MX8MM_PAD_CTL_DSE6 | \
+				     	     MX8MM_PAD_CTL_PUE | \
+				     	     MX8MM_PAD_CTL_PE)
 
 static void setup_uart(void)
 {
@@ -41,6 +45,9 @@ static struct pmic_config bd71837_cfg[] = {
 	/* unlock the PMIC regs */
 	{ BD718XX_REGLOCK, BD718XX_REGLOCK_PWRSEQ },
 
+	{ BD718XX_BUCK1_CTRL, 0x40 },
+	{ BD718XX_BUCK2_CTRL, 0x40 },
+
 	{ BD718XX_1ST_NODVS_BUCK_CTRL, 0x00 },
 	{ BD718XX_2ND_NODVS_BUCK_CTRL, 0x00 },
 	{ BD718XX_3RD_NODVS_BUCK_CTRL, 0x00 },
@@ -49,8 +56,7 @@ static struct pmic_config bd71837_cfg[] = {
 	{ BD718XX_BUCK1_VOLT_RUN, 0x14 },
 
 	/* vdd arm 0.9v */
-	{ BD718XX_BUCK2_VOLT_RUN, 0x0f },
-	{ BD718XX_BUCK2_VOLT_IDLE, 0x0b },
+	{ BD718XX_BUCK2_VOLT_RUN, 0x14 },
 
 	/* vdd dram 0.9v */
 	{ BD718XX_1ST_NODVS_BUCK_VOLT, 0x02 },
@@ -63,20 +69,6 @@ static struct pmic_config bd71837_cfg[] = {
 
 	/* nvcc dram 1v35 */
 	{ BD718XX_4TH_NODVS_BUCK_VOLT, 0x1E },
-
-	{ BD718XX_BUCK1_CTRL, 0xc1 },
-	{ BD718XX_BUCK2_CTRL, 0xc1 },
-
-	{ BD718XX_1ST_NODVS_BUCK_CTRL, 0x01 },
-	{ BD718XX_2ND_NODVS_BUCK_CTRL, 0x01 },
-	{ BD718XX_3RD_NODVS_BUCK_CTRL, 0x01 },
-	{ BD718XX_4TH_NODVS_BUCK_CTRL, 0x01 },
-
-	{ BD718XX_LDO1_VOLT, 0x62 },
-	{ BD718XX_LDO2_VOLT, 0x60 },
-	{ BD718XX_LDO3_VOLT, 0x40 },
-	{ BD718XX_LDO4_VOLT, 0x40 },
-	{ BD718XX_LDO6_VOLT, 0x43 },
 
 	{ BD718XX_REGLOCK, BD718XX_REGLOCK_VREG | BD718XX_REGLOCK_PWRSEQ },
 };
@@ -110,11 +102,26 @@ ENTRY_FUNCTION(start_karo_tx8m_1610_test, r0, r1, r2)
 	 * will then jump to DRAM in EL2
 	 */
 	if (current_el() == 3) {
+		u32 val;
+		void __iomem *gpio2 = IOMEM(MX8MM_GPIO2_BASE_ADDR);
 		imx8mm_early_clock_init();
 
 		karo_tx8m_1610_power_init_board();
 
 		imx8mm_ddr_init(&tx8m_1610_dram_timing, DRAM_TYPE_DDR3);
+
+		/* set RESET_OUT */
+		imx8mm_setup_pad(IMX8MM_PAD_SD2_RESET_B_GPIO2_IO19 | RESET_OUT_PAD_CTRL);
+		imx8m_gpio_direction_input(gpio2, 19);
+
+		/* set KEEP ALIVE */
+		imx8mm_setup_pad(IMX8MM_PAD_SD2_WP_GPIO2_IO20);
+		imx8m_gpio_direction_output(gpio2, 20, 1);
+
+		/* Use 50M anatop REF_CLK1 for ENET1, not from external RM 8.2.4.2*/
+		val = readl(MX8MM_IOMUXC_GPR_BASE_ADDR + MX8MM_IOMUXC_GPR1);
+		val |= MX8MM_IOMUXC_GPR1_GPR_ENET1_TX_CLK_SEL;
+		writel(val, MX8MM_IOMUXC_GPR_BASE_ADDR + MX8MM_IOMUXC_GPR1);
 
 		imx8mm_load_and_start_image_via_tfa();
 	}
