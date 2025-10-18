@@ -4,13 +4,16 @@
 #include <init.h>
 #include <mach/imx/bbu.h>
 #include <mach/imx/imx8mm-regs.h>
+#include <mach/imx/iomux-mx8mm.h>
+
+
 
 static int tx8m_1610_som_probe(struct device_d *dev)
 {
-		__raw_writel(0x200u, MX8MM_IOMUXC_GPR_BASE_ADDR+4);
-		imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0", BBU_HANDLER_FLAG_DEFAULT);
+	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0",
+												BBU_HANDLER_FLAG_DEFAULT);
 
-		return 0;
+	return 0;
 }
 
 static const struct of_device_id tx8m_1610_of_match[] = {
