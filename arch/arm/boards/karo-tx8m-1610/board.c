@@ -5,14 +5,14 @@
 #include <mach/imx/bbu.h>
 #include <mach/imx/imx8mm-regs.h>
 #include <mach/imx/iomux-mx8mm.h>
-
+#include <envfs.h>
 
 
 static int tx8m_1610_som_probe(struct device_d *dev)
 {
 	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0",
 												BBU_HANDLER_FLAG_DEFAULT);
-
+	defaultenv_append_directory(defaultenv_karo);
 	return 0;
 }
 
