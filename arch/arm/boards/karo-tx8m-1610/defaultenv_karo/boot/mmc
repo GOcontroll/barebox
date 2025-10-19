@@ -1,0 +1,12 @@
+#!/bin/sh
+
+BOOT=/mnt/mmc0.1
+
+detect mmc0
+
+global linux.bootargs.base="console=ttymxc2,115200 rootwait rw panic=-1 quiet"
+
+global bootm.image=$BOOT/Image
+global linux.bootargs.earlycon="earlycon=ec_imx6q,0x30880000,115200"
+global bootm.appendroot=1
+global bootm.root_dev=/dev/mmc0.2
