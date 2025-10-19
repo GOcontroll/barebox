@@ -21,6 +21,12 @@
 	status = "okay";
 };
 
+&usbotg1 {
+	dr_mode = "peripheral";
+	disable-over-current;
+	status = "okay";
+};
+
 &usdhc1 {
 	partitions-boot0 {
 		compatible = "barebox,fixed-partitions";
