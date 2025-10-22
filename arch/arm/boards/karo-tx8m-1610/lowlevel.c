@@ -106,22 +106,22 @@ ENTRY_FUNCTION(start_karo_tx8m_1610_test, r0, r1, r2)
 		void __iomem *gpio2 = IOMEM(MX8MM_GPIO2_BASE_ADDR);
 		imx8mm_early_clock_init();
 
-		karo_tx8m_1610_power_init_board();
-
-		imx8mm_ddr_init(&tx8m_1610_dram_timing, DRAM_TYPE_DDR3);
+		/* set KEEP ALIVE */
+		imx8mm_setup_pad(IMX8MM_PAD_SD2_WP_GPIO2_IO20);
+		imx8m_gpio_direction_output(gpio2, 20, 1);
 
 		/* set RESET_OUT */
 		imx8mm_setup_pad(IMX8MM_PAD_SD2_RESET_B_GPIO2_IO19 | RESET_OUT_PAD_CTRL);
 		imx8m_gpio_direction_input(gpio2, 19);
 
-		/* set KEEP ALIVE */
-		imx8mm_setup_pad(IMX8MM_PAD_SD2_WP_GPIO2_IO20);
-		imx8m_gpio_direction_output(gpio2, 20, 1);
-
 		/* Use 50M anatop REF_CLK1 for ENET1, not from external RM 8.2.4.2*/
 		val = readl(MX8MM_IOMUXC_GPR_BASE_ADDR + MX8MM_IOMUXC_GPR1);
 		val |= MX8MM_IOMUXC_GPR1_GPR_ENET1_TX_CLK_SEL;
 		writel(val, MX8MM_IOMUXC_GPR_BASE_ADDR + MX8MM_IOMUXC_GPR1);
+
+		karo_tx8m_1610_power_init_board();
+
+		imx8mm_ddr_init(&tx8m_1610_dram_timing, DRAM_TYPE_DDR3);
 
 		imx8mm_load_and_start_image_via_tfa();
 	}
