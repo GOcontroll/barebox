@@ -4,7 +4,7 @@ BOOT=/mnt/mmc0.0
 
 detect mmc0
 
-global linux.bootargs.base="console=ttymxc2,115200 rootwait rw panic=-1 quiet cpuidle.off=1"
+global linux.bootargs.base="console=ttymxc2,115200 rw panic=-1 quiet cpuidle.off=1"
 
 global bootm.image=$BOOT/Image
 global linux.bootargs.earlycon="earlycon=ec_imx6q,0x30880000,115200"
