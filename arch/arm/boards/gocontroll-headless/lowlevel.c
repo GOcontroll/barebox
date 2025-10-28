@@ -18,12 +18,58 @@
 
 #include "lowlevel.h"
 
-extern char __dtb_z_imx8mm_tx8m_1610_test_start[];
+extern char __dtb_z_imx8mm_tx8m_1610_moduline_mini_111_start[];
+extern char __dtb_z_imx8mm_tx8m_1610_moduline_iv_306_d_start[];
 
 #define UART_PAD_CTRL		MUX_PAD_CTRL(PAD_CTL_DSE_3P3V_45_OHM)
 #define RESET_OUT_PAD_CTRL	MUX_PAD_CTRL(MX8MM_PAD_CTL_DSE6 | \
-				     	     MX8MM_PAD_CTL_PUE | \
-				     	     MX8MM_PAD_CTL_PE)
+					     MX8MM_PAD_CTL_PUE | \
+					     MX8MM_PAD_CTL_PE)
+#define DISCOVERY_PAD_CTRL	MUX_PAD_CTRL(MX8MM_PAD_CTL_PUE | \
+					     MX8MM_PAD_CTL_PE)
+
+#define MODULINE_IV_306_D_ID 0b00000
+#define MODULINE_MINI_111_ID 0b00010
+
+static void setup_board_discovery(void)
+{
+	void __iomem *gpio4 = IOMEM(MX8MM_GPIO4_BASE_ADDR);
+	/* ascending SODIMM pin number */
+	imx8mm_setup_pad(IMX8MM_PAD_SAI1_RXFS_GPIO4_IO0  | DISCOVERY_PAD_CTRL);
+	imx8mm_setup_pad(IMX8MM_PAD_SAI1_RXC_GPIO4_IO1   | DISCOVERY_PAD_CTRL);
+	imx8mm_setup_pad(IMX8MM_PAD_SAI1_MCLK_GPIO4_IO20 | DISCOVERY_PAD_CTRL);
+	imx8mm_setup_pad(IMX8MM_PAD_SAI1_RXD0_GPIO4_IO2  | DISCOVERY_PAD_CTRL);
+	imx8mm_setup_pad(IMX8MM_PAD_SAI1_RXD2_GPIO4_IO4  | DISCOVERY_PAD_CTRL);
+	imx8m_gpio_direction_input(gpio4, 0);
+	imx8m_gpio_direction_input(gpio4, 1);
+	imx8m_gpio_direction_input(gpio4, 20);
+	imx8m_gpio_direction_input(gpio4, 2);
+	imx8m_gpio_direction_input(gpio4, 4);
+}
+
+static __noreturn noinline void gocontroll_headless_start(void)
+{
+	void __iomem *gpio4 = IOMEM(MX8MM_GPIO4_BASE_ADDR);
+	void *fdt;
+	int id;
+
+	id = (imx8m_gpio_val(gpio4, 0) << 0) + (imx8m_gpio_val(gpio4, 1) << 1) +
+		(imx8m_gpio_val(gpio4, 20) << 2) + (imx8m_gpio_val(gpio4, 2) << 3) +
+		(imx8m_gpio_val(gpio4, 4) << 4);
+
+	switch (id) {
+		case MODULINE_IV_306_D_ID:
+			fdt = __dtb_z_imx8mm_tx8m_1610_moduline_iv_306_d_start;
+			break;
+		case MODULINE_MINI_111_ID:
+			fdt = __dtb_z_imx8mm_tx8m_1610_moduline_mini_111_start;
+			break;
+		default:
+			fdt = __dtb_z_imx8mm_tx8m_1610_moduline_iv_306_d_start;
+	}
+
+	imx8mm_barebox_entry(fdt);
+}
 
 static void setup_uart(void)
 {
@@ -87,7 +133,7 @@ void karo_tx8m_1610_power_init_board(void)
 	pmic_configure(i2c, 0x4b, bd71837_cfg, ARRAY_SIZE(bd71837_cfg));
 }
 
-ENTRY_FUNCTION(start_karo_tx8m_1610_test, r0, r1, r2)
+ENTRY_FUNCTION(start_gocontroll_headless, r0, r1, r2)
 {
 	imx8mm_cpu_lowlevel_init();
 
@@ -119,6 +165,8 @@ ENTRY_FUNCTION(start_karo_tx8m_1610_test, r0, r1, r2)
 		val |= MX8MM_IOMUXC_GPR1_GPR_ENET1_TX_CLK_SEL;
 		writel(val, MX8MM_IOMUXC_GPR_BASE_ADDR + MX8MM_IOMUXC_GPR1);
 
+		setup_board_discovery();
+
 		karo_tx8m_1610_power_init_board();
 
 		imx8mm_ddr_init(&tx8m_1610_dram_timing, DRAM_TYPE_DDR3);
@@ -126,6 +174,5 @@ ENTRY_FUNCTION(start_karo_tx8m_1610_test, r0, r1, r2)
 		imx8mm_load_and_start_image_via_tfa();
 	}
 
-	/* Standard entry we hit once we initialized both DDR and ATF */
-	imx8mm_barebox_entry(__dtb_z_imx8mm_tx8m_1610_test_start);
+	gocontroll_headless_start();
 }

@@ -493,7 +493,7 @@ $(call build_imx8m_habv4img, CONFIG_MACH_PROTONIC_IMX8M, start_prt_prt8mm, proto
 
 $(call build_imx8m_habv4img, CONFIG_MACH_INNOCOMM_WB15, start_innocomm_wb15_evk, innocomm-imx8mm-wb15/flash-header-imx8mm-wb15, innocomm-imx8mm-wb15-evk)
 
-$(call build_imx8m_habv4img, CONFIG_MACH_KARO_TX8M_1610, start_karo_tx8m_1610_test, karo-tx8m-1610/flash-header-imx8mm-tx8m-1610, karo-tx8m-1610-test)
+$(call build_imx8m_habv4img, CONFIG_MACH_GOCONTROLL_HEADLESS, start_gocontroll_headless, gocontroll-headless/flash-header-imx8mm-tx8m-1610, gocontroll-headless)
 
 # ----------------------- i.MX8mn based boards --------------------------
 $(call build_imx8m_habv4img, CONFIG_MACH_NXP_IMX8MN_EVK, start_nxp_imx8mn_evk, nxp-imx8mn-evk/flash-header-imx8mn-evk, nxp-imx8mn-evk)
