@@ -638,8 +638,8 @@ config MACH_KARO_QSXP_ML81
 	select IMX8M_DRAM
 	select I2C_IMX_EARLY
 
-config MACH_KARO_TX8M_1610
-	bool "Ka-Ro TX8M 1610 (i.MX8MM) SOM"
+config MACH_GOCONTROLL_HEADLESS
+	bool "GOcontroll Moduline Mini/IV"
 	select ARCH_IMX8MM
 	select FIRMWARE_IMX_DDR3_PMU_TRAIN
 	select FIRMWARE_IMX8MM_ATF
