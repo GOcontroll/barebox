@@ -210,13 +210,11 @@
 			BUCK6 {
 				regulator-always-on;
 				regulator-boot-on;
-				/*
-				 * The default output voltage is 1.1V, bumped
-				 * to 1.35V in HW by a 499R/2.2K voltage divider in the
-				 * feedback path.
-				 */
-				regulator-max-microvolt = <1100000>;
-				regulator-min-microvolt = <1100000>;
+				regulator-min-microvolt = <1349494>;
+				regulator-max-microvolt = <1349494>;
+				rohm,fb-pull-up-microvolt = <0>;
+				rohm,feedback-pull-up-r1-ohms = <2200>;
+				rohm,feedback-pull-up-r2-ohms = <499>;
 				regulator-name = "buck6";
 			};
 
