@@ -12,7 +12,7 @@ static int tx8m_1610_som_probe(struct device_d *dev)
 {
 	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0",
 												BBU_HANDLER_FLAG_DEFAULT);
-	defaultenv_append_directory(defaultenv_gocontroll);
+	defaultenv_append_directory(defaultenv_gocontroll_headless);
 	return 0;
 }
 

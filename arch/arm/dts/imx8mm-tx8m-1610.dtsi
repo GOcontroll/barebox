@@ -210,12 +210,12 @@
 			BUCK6 {
 				regulator-always-on;
 				regulator-boot-on;
-				regulator-min-microvolt = <1349494>;
-				regulator-max-microvolt = <1349494>;
+				regulator-max-microvolt = <(1350000 + 100000)>;
+				regulator-min-microvolt = <(1350000 - 67000)>;
+				regulator-name = "buck6";
 				rohm,fb-pull-up-microvolt = <0>;
 				rohm,feedback-pull-up-r1-ohms = <2200>;
 				rohm,feedback-pull-up-r2-ohms = <499>;
-				regulator-name = "buck6";
 			};
 
 			LDO1 {

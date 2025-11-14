@@ -37,6 +37,7 @@ lwl-$(CONFIG_MACH_MEERKAT96) += imx7d-meerkat96.dtb.o
 lwl-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
 lwl-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG) += kirkwood-guruplug-server-plus-bb.dtb.o
 lwl-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += armada-370-mirabox-bb.dtb.o
+lwl-$(CONFIG_MACH_GOCONTROLL_DISPLAY) += imx8mp-tx8p-ml81-moduline-display-106.dtb.o
 lwl-$(CONFIG_MACH_GOCONTROLL_HEADLESS) += imx8mm-tx8m-1610-moduline-iv-306-d.dtb.o \
 					  imx8mm-tx8m-1610-moduline-mini-111.dtb.o
 lwl-$(CONFIG_MACH_GRINN_LITEBOARD) += imx6ul-liteboard.dtb.o

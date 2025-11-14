@@ -16,8 +16,6 @@
 #include <soc/imx8m/ddr.h>
 #include <mach/imx/imx-gpio.h>
 
-#include "lowlevel.h"
-
 extern char __dtb_z_imx8mm_tx8m_1610_moduline_mini_111_start[];
 extern char __dtb_z_imx8mm_tx8m_1610_moduline_iv_306_d_start[];
 
@@ -119,7 +117,7 @@ static struct pmic_config bd71837_cfg[] = {
 	{ BD718XX_REGLOCK, BD718XX_REGLOCK_VREG | BD718XX_REGLOCK_PWRSEQ },
 };
 
-void karo_tx8m_1610_power_init_board(void)
+static void karo_tx8m_1610_power_init_board(void)
 {
 	struct pbl_i2c *i2c;
 
@@ -132,6 +130,8 @@ void karo_tx8m_1610_power_init_board(void)
 
 	pmic_configure(i2c, 0x4b, bd71837_cfg, ARRAY_SIZE(bd71837_cfg));
 }
+
+extern struct dram_timing_info tx8m_1610_dram_timing;
 
 ENTRY_FUNCTION(start_gocontroll_headless, r0, r1, r2)
 {
