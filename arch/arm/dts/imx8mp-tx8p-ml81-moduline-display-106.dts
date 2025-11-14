@@ -28,3 +28,7 @@
 &usb_dwc3_1 {
 	dr_mode = "host";
 };
+
+&eqos {
+	nvmem-cells = <&eth_mac1>;
+};
