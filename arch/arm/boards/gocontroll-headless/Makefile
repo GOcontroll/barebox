@@ -2,4 +2,4 @@
 
 lwl-y += lowlevel.o ddr3l_timing.o
 obj-y += board.o
-bbenv-y += defaultenv_gocontroll
+bbenv-y += defaultenv_gocontroll_headless

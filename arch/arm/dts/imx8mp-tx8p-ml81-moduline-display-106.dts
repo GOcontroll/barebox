@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright (C) 2025 Maud Spierings <maudspierings@gocontroll.com>
+ */
+
+/dts-v1/;
+
+#include <arm64/freescale/imx8mp-tx8p-ml81-moduline-display-106.dts>
+#include "imx8mp.dtsi"
+
+/ {
+	compatible = "gocontroll,moduline-display", "karo,imx8mp-tx8p-ml81", "fsl,imx8mp";
+};
+
+&usdhc3 {
+	partitions-boot0 {
+		compatible = "barebox,fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		partition@0 {
+			label = "barebox";
+			reg = <0x0 0x800000>;
+		};
+	};
+};
+
+&usb_dwc3_1 {
+	dr_mode = "host";
+};
