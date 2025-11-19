@@ -26,6 +26,56 @@
 		stdout-path = "serial2:115200n8";
 	};
 
+	gpios {
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_sysfs_gpios>;
+
+		reset-module1 {
+			label = "ResetM-1";
+			gpios = <&gpio1 7 GPIO_ACTIVE_LOW>;
+		};
+
+		reset-module2 {
+			label = "ResetM-2";
+			gpios = <&gpio5 21 GPIO_ACTIVE_LOW>;
+		};
+
+		reset-module3 {
+			label = "ResetM-3";
+			gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
+		};
+
+		reset-module4 {
+			label = "ResetM-4";
+			gpios = <&gpio3 21 GPIO_ACTIVE_LOW>;
+		};
+
+		control-relais {
+			label = "power-active";
+			gpios = <&gpio2 20 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+
+		sim7000-level {
+			label = "sim7000-level-active";
+			gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		sim7000-pwr {
+			label = "pwr-sim7000";
+			gpios = <&gpio1 4 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+
+		sim7000-rst {
+			label = "rst-sim7000";
+			gpios = <&gpio1 6 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+	};
+
 	mcp_clock: mcp-clock {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -237,7 +287,7 @@
 	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	sda-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
 	status = "okay";
-
+	/*
 	lp5012@14 {
 		compatible = "ti,lp5012";
 		reg = <0x14>;
@@ -335,7 +385,7 @@
 				color = <LED_COLOR_ID_BLUE>;
 			};
 		};
-	};
+	};*/
 
 	accelerometer@18 {
 		compatible = "st,lis2dw12";
