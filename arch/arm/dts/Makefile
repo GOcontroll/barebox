@@ -263,6 +263,8 @@ lwl-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP) += imx8mp-var-dart-dt8mcusto
 lwl-$(CONFIG_MACH_TQMA93XX) += imx93-tqma9352-mba93xxca.dtb.o \
 			       imx93-tqma9352-mba93xxla.dtb.o
 
+obj-$(CONFIG_MACH_GOCONTROLL_DISPLAY) += imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtbo.o \
+					 imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtbo.o
 obj-$(CONFIG_MACH_WOLFVISION_PF5) += rk3568-wolfvision-pf5-io-expander.dtbo.o \
 				     rk3568-wolfvision-pf5-display-vz.dtbo.o
 clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z

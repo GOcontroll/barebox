@@ -1,7 +1,9 @@
 #!/bin/sh
 
 if [ "$bootsource" != "serial" ]; then
-    exit 0
+	global autoboot_timeout=0
+	global boot.default=mmc
+	exit 0
 fi
-
+global autoboot=abort
 usbgadget -a -A "" -b
