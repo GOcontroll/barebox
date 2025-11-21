@@ -146,6 +146,14 @@ config DRIVER_VIDEO_BACKLIGHT
 	help
 	  Enable this for backlight support.
 
+config BACKLIGHT_MAX25014
+	tristate "Backlight driver for the Maxim MAX25014 chip"
+	depends on I2C
+	select REGMAP_I2C
+	depends on DRIVER_VIDEO_BACKLIGHT
+	help
+	  If you are using a MAX25014 chip as a backlight driver say Y to enable it.
+
 config DRIVER_VIDEO_BACKLIGHT_PWM
 	bool "PWM backlight support"
 	depends on PWM && GPIOLIB
