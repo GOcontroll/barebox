@@ -10,7 +10,7 @@
 
 / {
 	chassis-type = "embedded";
-	compatible = "gocontroll,moduline-mini", "karo,imx8mm-tx8m-1610", "fsl,imx8mm";
+	compatible = "gocontroll,moduline-mini-111", "karo,imx8mm-tx8m-1610", "fsl,imx8mm";
 	hardware = "Moduline Mini V1.11";
 	model = "GOcontroll Moduline Mini";
 
@@ -141,6 +141,10 @@
 		power-off-delay-us = <500000>;
 		reset-gpios = <&gpio5 28 GPIO_ACTIVE_LOW>;
 	};
+};
+
+&{/soc@0/bus@30800000/i2c@30a20000/pmic@4b/regulators} {
+	barebox,allow-dummy-supply;
 };
 
 &ecspi1 {

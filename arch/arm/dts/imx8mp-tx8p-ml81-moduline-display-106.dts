@@ -9,7 +9,46 @@
 #include "imx8mp.dtsi"
 
 / {
-	compatible = "gocontroll,moduline-display", "karo,imx8mp-tx8p-ml81", "fsl,imx8mp";
+	compatible = "gocontroll,moduline-display-106", "karo,imx8mp-tx8p-ml81", "fsl,imx8mp";
+
+	gpios {
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_sysfs_gpios>;
+		
+		reset-module1 {
+			label = "ResetM-1";
+			gpios = <&gpio5 10 GPIO_ACTIVE_LOW>;
+		};
+		
+		reset-module2 {
+			label = "ResetM-2";
+			gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
+		};
+		
+		control-relais {
+			label = "power-active";
+			gpios = <&gpio4 4 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
+	};
+};
+
+&{/soc@0/bus@30800000/i2c@30a20000/pmic@25/regulators} {
+	barebox,allow-dummy-supply;
+};
+
+&iomuxc {
+	pinctrl_sysfs_gpios: sysfsgpiogrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_ECSPI2_SCLK__GPIO5_IO10 /* COM pin 49 */
+			MX8MP_DSE_X1
+			MX8MP_IOMUXC_GPIO1_IO08__GPIO1_IO08 /* COM pin 158 */
+			MX8MP_DSE_X1
+			MX8MP_IOMUXC_SAI1_RXD2__GPIO4_IO04 /* COM pin 45 */
+			MX8MP_DSE_X1
+		>;
+	};
 };
 
 &usdhc3 {

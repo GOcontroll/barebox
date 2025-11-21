@@ -7,12 +7,32 @@
 #include <mach/imx/iomux-mx8mm.h>
 #include <envfs.h>
 
+#define MODULINE_DISPLAY_AV101HDT_A10_DATA __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av101hdt_a10_start
+#define MODULINE_DISPLAY_AV123z7m_n17_DATA __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av123z7m_n17_start
 
 static int tx8p_ml81_som_probe(struct device_d *dev)
 {
+	struct device_node *node;
+	int ret;
 	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0",
-												BBU_HANDLER_FLAG_DEFAULT);
+						    BBU_HANDLER_FLAG_DEFAULT);
 	defaultenv_append_directory(defaultenv_gocontroll_display);
+
+	node = of_unflatten_dtb(MODULINE_DISPLAY_AV101HDT_A10_DATA, INT_MAX);
+	if (IS_ERR(node)) {
+		pr_err("Cannot unflatten dtbo\n");
+		return PTR_ERR(node);
+	}
+
+	ret = of_overlay_apply_tree(of_get_root_node(), node);
+
+	of_delete_node(node);
+
+	if (ret) {
+		pr_err("Cannot apply overlay: %pe\n", ERR_PTR(ret));
+		return ret;
+	}
+
 	return 0;
 }
 

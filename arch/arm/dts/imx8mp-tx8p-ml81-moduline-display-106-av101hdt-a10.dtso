@@ -1,0 +1,10 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright 2025 GOcontroll B.V.
+ * Author: Maud Spierings <maudspierings@gocontroll.com>
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include <arm64/freescale/imx8mp-tx8p-ml81-moduline-display-106-av101hdt-a10.dtso>
