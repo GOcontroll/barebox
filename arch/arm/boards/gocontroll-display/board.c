@@ -7,8 +7,8 @@
 #include <mach/imx/iomux-mx8mm.h>
 #include <envfs.h>
 
-#define MODULINE_DISPLAY_AV101HDT_A10_DATA __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av101hdt_a10_start
-#define MODULINE_DISPLAY_AV123z7m_n17_DATA __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av123z7m_n17_start
+extern char __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av101hdt_a10_start[];
+extern char __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av123z7m_n17_start[];
 
 static int tx8p_ml81_som_probe(struct device_d *dev)
 {
@@ -18,7 +18,7 @@ static int tx8p_ml81_som_probe(struct device_d *dev)
 						    BBU_HANDLER_FLAG_DEFAULT);
 	defaultenv_append_directory(defaultenv_gocontroll_display);
 
-	node = of_unflatten_dtb(MODULINE_DISPLAY_AV101HDT_A10_DATA, INT_MAX);
+	node = of_unflatten_dtb(__dtbo_imx8mp_tx8p_ml81_moduline_display_106_av101hdt_a10_start, INT_MAX);
 	if (IS_ERR(node)) {
 		pr_err("Cannot unflatten dtbo\n");
 		return PTR_ERR(node);
