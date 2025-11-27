@@ -8,7 +8,6 @@
 
 #include <common.h>
 #include <soc/imx8m/ddr.h>
-#define DDR_ONE_RANK
 
 static struct dram_cfg_param ddr_ddrc_cfg[] = {
 	/** Initialize DDRC registers **/
