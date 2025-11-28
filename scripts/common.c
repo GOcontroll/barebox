@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-2.0-or-later
+ // SPDX-License-Identifier: GPL-2.0-or-later
 #include <stdio.h>
 #include <stdint.h>
 #include <sys/types.h>
@@ -202,8 +202,12 @@ int pread_full(int fd, void *buf, size_t size, loff_t offset)
 	size_t insize = size;
 	int now;
 
+	now = lseek(fd, offset, SEEK_SET);
+	if (now < 0)
+		return now;
+
 	while (size) {
-		now = pread(fd, buf, size, offset);
+		now = read(fd, buf, size);
 		if (now == 0)
 			break;
 		if (now < 0)
