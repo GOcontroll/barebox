@@ -6,4 +6,9 @@ if [ "$bootsource" != "serial" ]; then
 	exit 0
 fi
 global autoboot=abort
-usbgadget -a -A "" -b
+
+if [ test -f "/dev/mmc0.root" ]; then
+	usbgadget -a -A "/dev/mmc0.root(root)" -b
+else
+	usbgadget -a -A "" -b
+fi
