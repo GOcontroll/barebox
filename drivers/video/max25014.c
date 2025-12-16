@@ -342,6 +342,8 @@ static int max25014_probe(struct device *dev)
 	maxim->bl.brightness_max = MAX_BRIGHTNESS;
 	maxim->bl.brightness_default = initial_brightness;
 	maxim->bl.brightness_set = max25014_update_status;
+	maxim->bl.dev.parent = dev;
+	maxim->bl.node = dev->of_node;
 
 	ret = max25014_configure(maxim, ret);
 	if (ret) {
