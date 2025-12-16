@@ -351,6 +351,8 @@ static int max25014_probe(struct device *dev)
 		goto disable_full;
 	}
 
+	dev_set_drvdata(&maxim->bl.dev, maxim);
+
 	ret = backlight_register(&maxim->bl);
 	if (ret) {
 		ret = dev_err_probe(dev, ret,
