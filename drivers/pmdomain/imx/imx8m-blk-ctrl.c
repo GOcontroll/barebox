@@ -809,9 +809,9 @@ static const struct of_device_id imx8m_blk_ctrl_of_match[] = {
 		.compatible = "fsl,imx8mq-vpu-blk-ctrl",
 		.data = &imx8mq_vpu_blk_ctl_dev_data
 	}, {
-	// 	.compatible = "fsl,imx8mp-vpu-blk-ctrl",
-	// 	.data = &imx8mp_vpu_blk_ctl_dev_data
-	// }, {
+		.compatible = "fsl,imx8mp-vpu-blk-ctrl",
+		.data = &imx8mp_vpu_blk_ctl_dev_data
+	}, {
 		/* Sentinel */
 	}
 };
