@@ -8,3 +8,83 @@
 /plugin/;
 
 #include <arm64/freescale/imx8mp-tx8p-ml81-moduline-display-106-av123z7m-n17.dtso>
+
+&{/} {
+	panel {
+		compatible = "boe,av123z7m-n17", "simple-panel";
+		backlight = <&backlight>;
+		bus-format = <0x100a>;
+
+		display-timings {
+			timing { //FIXME
+				clock-frequency = <75330000>;
+				hactive = <1280>;
+				hfront-porch = <42>;
+				hback-porch = <18>;
+				hsync-len = <10>;
+				vactive = <720>;
+				vfront-porch = <183>;
+				vback-porch = <8>;
+				vsync-len = <19>;
+				de-active = <1>;
+			};
+		};
+	};
+
+	tmd: thermistor-display {
+		compatible = "murata,ncp18xh103";
+		label = "display-temp";
+		io-channels = <&adc 2>;
+		pullup-uv = <3230000>;
+		pullup-ohm = <10000>;
+		pulldown-ohm = <0>;
+		#thermal-sensor-cells = <0>;
+	};
+};
+
+&adc {
+	#io-channel-cells = <1>;
+};
+
+&i2c4 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	backlight: backlight@6f {
+		compatible = "maxim,max25014";
+		reg = <0x6f>;
+
+		bl-name = "max25014";
+		default-brightness = <50>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_backlight>;
+		enable-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
+		maxim,iset = <7>;
+		maxim,strings = <1 1 1 1>;
+	};
+};
+
+&iomuxc {
+	pinctrl_backlight: backlightgrp {
+		fsl,pins = <
+			MX8MP_IOMUXC_GPIO1_IO04__GPIO1_IO04 /* COM pin 154 */
+			(MX8MP_PULL_UP | MX8MP_PULL_ENABLE)
+		>;
+	};
+};
+
+&{/thermal-zones} {
+	display-thermal {
+		polling-delay = <1000>;
+		polling-delay-passive = <1000>;
+		thermal-sensors = <&tmd>;
+
+		trips {
+			trip0 {
+				temperature = <75000>;
+				hysteresis = <5000>;
+				type = "hot";
+			};
+		};
+	};
+};
