@@ -1,24 +1,24 @@
 #include <bootsource.h>
 #include <common.h>
 #include <deep-probe.h>
+#include <envfs.h>
+#include <gpio.h>
+#include <i2c/i2c.h>
 #include <init.h>
 #include <mach/imx/bbu.h>
-#include <mach/imx/imx8mm-regs.h>
-#include <mach/imx/iomux-mx8mm.h>
-#include <envfs.h>
+#include <mach/imx/generic.h>
+
+#define AV101_TOUCHSCREEN_ADDR 0x24
+#define AV101_TOUCHSCREEN_RESET_PIN IMX_GPIO_NR(4,13)
 
 extern char __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av101hdt_a10_start[];
 extern char __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av123z7m_n17_start[];
 
-static int tx8p_ml81_som_probe(struct device_d *dev)
-{
+static int moduline_display_apply_overlay(char * dtbo) {
 	struct device_node *node;
 	int ret;
-	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0",
-						    BBU_HANDLER_FLAG_DEFAULT);
-	defaultenv_append_directory(defaultenv_gocontroll_display);
 
-	node = of_unflatten_dtb(__dtbo_imx8mp_tx8p_ml81_moduline_display_106_av101hdt_a10_start, INT_MAX);
+	node = of_unflatten_dtb(dtbo, INT_MAX);
 	if (IS_ERR(node)) {
 		pr_err("Cannot unflatten dtbo\n");
 		return PTR_ERR(node);
@@ -32,8 +32,51 @@ static int tx8p_ml81_som_probe(struct device_d *dev)
 		pr_err("Cannot apply overlay: %pe\n", ERR_PTR(ret));
 		return ret;
 	}
-
 	return 0;
+}
+
+static int tx8p_ml81_som_probe(struct device_d *dev)
+{
+	struct i2c_adapter * i2c4;
+	struct i2c_client client;
+	char *dtbo = NULL;
+	int ret;
+	uint8_t value;
+
+	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0",
+							BBU_HANDLER_FLAG_DEFAULT);
+	defaultenv_append_directory(defaultenv_gocontroll_display);
+	
+	of_device_ensure_probed_by_alias("gpio3");
+	of_device_ensure_probed_by_alias("i2c3");
+	i2c4 = i2c_get_adapter(3);
+	if (!i2c4) {
+		pr_err("Could not get i2c4 adapter\n");
+		return -ENODEV;
+	}
+
+	ret = gpio_direction_output(AV101_TOUCHSCREEN_RESET_PIN, 1);
+	if (ret) {
+		pr_err("av101 touchscreen reset: failed to request pin\n");
+		return ret;
+	}
+
+	client.adapter = i2c4;
+	client.addr = AV101_TOUCHSCREEN_ADDR;
+
+	mdelay(10);
+
+	ret = i2c_read_reg(&client, 0x00, &value, 1);
+
+	if (ret < 0) {
+		dtbo = __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av123z7m_n17_start;
+	} else {
+		dtbo = __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av101hdt_a10_start;
+	}
+
+	ret = moduline_display_apply_overlay(dtbo);
+
+	return ret;
 }
 
 static const struct of_device_id tx8p_ml81_of_match[] = {
