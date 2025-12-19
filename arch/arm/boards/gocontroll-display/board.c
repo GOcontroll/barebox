@@ -35,7 +35,7 @@ static int moduline_display_apply_overlay(char * dtbo) {
 	return 0;
 }
 
-static int tx8p_ml81_som_probe(struct device_d *dev)
+static int gocontroll_moduline_display_som_probe(struct device_d *dev)
 {
 	struct i2c_adapter * i2c4;
 	struct i2c_client client;
@@ -79,16 +79,17 @@ static int tx8p_ml81_som_probe(struct device_d *dev)
 	return ret;
 }
 
-static const struct of_device_id tx8p_ml81_of_match[] = {
-	{ .compatible = "karo,imx8mp-tx8p-ml81" },
+static const struct of_device_id gocontroll_moduline_display_of_match[] = {
+	{ .compatible = "gocontroll,moduline-display-106" },
+	{ .compatible = "gocontroll,moduline-display-107" },
 	{ /* sentinel */ },
 };
 
-static struct driver_d tx8p_ml81_som_driver = {
-	.name = "karo-tx8p-ml81",
-	.probe = tx8p_ml81_som_probe,
-	.of_compatible = DRV_OF_COMPAT(tx8p_ml81_of_match),
+static struct driver_d gocontroll_moduline_display_driver = {
+	.name = "GOcontroll Moduline Display",
+	.probe = gocontroll_moduline_display_som_probe,
+	.of_compatible = DRV_OF_COMPAT(gocontroll_moduline_display_of_match),
 };
-coredevice_platform_driver(tx8p_ml81_som_driver);
+coredevice_platform_driver(gocontroll_moduline_display_driver);
 
-BAREBOX_DEEP_PROBE_ENABLE(tx8p_ml81_of_match);
+BAREBOX_DEEP_PROBE_ENABLE(gocontroll_moduline_display_of_match);
