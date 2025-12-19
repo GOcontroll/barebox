@@ -43,7 +43,7 @@ static int tx8p_ml81_som_probe(struct device_d *dev)
 	int ret;
 	uint8_t value;
 
-	imx8m_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0",
+	imx8m_bbu_internal_mmcboot_register_handler("emmc", "/dev/mmc0",
 							BBU_HANDLER_FLAG_DEFAULT);
 	defaultenv_append_directory(defaultenv_gocontroll_display);
 	
