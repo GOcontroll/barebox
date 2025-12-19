@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright (C) 2025 Maud Spierings <maudspierings@gocontroll.com>
+ */
+
+#include "imx8mp-tx8p-ml81-moduline-display-106.dts"
+
+/ {
+	compatible = "gocontroll,moduline-display-107", "karo,imx8mp-tx8p-ml81", "fsl,imx8mp";
+	hardware = "Moduline Display V1.07";
+};
+
+&reg_1v8_per {
+	/delete-property/ gpio;
+	/delete-property/ enable-active-high;
+	regulator-always-on;
+	regulator-boot-on;
+};

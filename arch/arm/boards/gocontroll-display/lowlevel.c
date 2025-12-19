@@ -26,6 +26,7 @@
 #include <soc/fsl/fsl_udc.h>
 
 extern char __dtb_z_imx8mp_tx8p_ml81_moduline_display_106_start[];
+extern char __dtb_z_imx8mp_tx8p_ml81_moduline_display_107_start[];
 
 #define IOMUXC_GPR_GPR1_GPR_ENET_QOS_INTF_SEL_MASK	GENMASK(18, 16)
 #define ENET_QOS_RGMII_EN							BIT(21)
@@ -93,8 +94,7 @@ static void karo_tx8p_ml81_power_init_board(void)
 
 extern struct dram_timing_info tx8p_ml81_dram_timing;
 
-ENTRY_FUNCTION(start_gocontroll_display, r0, r1, r2)
-{
+int gocontroll_display_lowlevel(void) {
 	imx8mp_cpu_lowlevel_init();
 
 	relocate_to_current_adr();
@@ -121,6 +121,18 @@ ENTRY_FUNCTION(start_gocontroll_display, r0, r1, r2)
 
 		imx8mp_load_and_start_image_via_tfa();
 	}
+}
+
+ENTRY_FUNCTION(start_gocontroll_display_106, r0, r1, r2)
+{
+	gocontroll_display_lowlevel();
 
 	imx8mp_barebox_entry(__dtb_z_imx8mp_tx8p_ml81_moduline_display_106_start);
+}
+
+ENTRY_FUNCTION(start_gocontroll_display_107, r0, r1, r2)
+{
+	gocontroll_display_lowlevel();
+
+	imx8mp_barebox_entry(__dtb_z_imx8mp_tx8p_ml81_moduline_display_107_start);
 }

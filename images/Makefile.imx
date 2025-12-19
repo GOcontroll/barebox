@@ -517,7 +517,8 @@ $(call build_imx8m_habv4img, CONFIG_MACH_PROTONIC_IMX8M, start_prt_prt8ml, proto
 
 $(call build_imx8m_habv4img, CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP, start_variscite_imx8mp_dart, variscite-dt8mcustomboard-imx8mp/flash-header-imx8mp-dart, variscite-imx8mp-dart-cb)
 
-$(call build_imx8m_habv4img, CONFIG_MACH_GOCONTROLL_DISPLAY, start_gocontroll_display, gocontroll-display/flash-header-imx8mp-tx8p-ml81, gocontroll-display)
+$(call build_imx8m_habv4img, CONFIG_MACH_GOCONTROLL_DISPLAY, start_gocontroll_display_106, gocontroll-display/flash-header-imx8mp-tx8p-ml81, gocontroll-display-106)
+$(call build_imx8m_habv4img, CONFIG_MACH_GOCONTROLL_DISPLAY, start_gocontroll_display_107, gocontroll-display/flash-header-imx8mp-tx8p-ml81, gocontroll-display-107)
 
 # ----------------------- i.MX8mq based boards --------------------------
 $(call build_imx8m_habv4img, CONFIG_MACH_NXP_IMX8MQ_EVK, start_nxp_imx8mq_evk, nxp-imx8mq-evk/flash-header-imx8mq-evk, nxp-imx8mq-evk)
