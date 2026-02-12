@@ -1,8 +1,15 @@
 #!/bin/sh
 
+global boot.default=mmc0.1
+global linux.bootargs.base="console=ttymxc0,115200 rw panic=-1 quiet vt.global_cursor_default=0"
+global linux.bootargs.earlycon="earlycon=ec_imx6q,0x30860000,115200"
+global bootm.appendroot=1
+global bootm.root_dev=/dev/mmc0.1
+global of.overlay.path=/mnt/mmc0.1/boot/
+
 if [ "$bootsource" != "serial" ]; then
 	global autoboot_timeout=0
-	global boot.default=mmc
+
 	exit 0
 fi
 global autoboot=abort

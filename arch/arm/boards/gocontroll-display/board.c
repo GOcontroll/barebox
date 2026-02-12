@@ -2,6 +2,7 @@
 #include <common.h>
 #include <deep-probe.h>
 #include <envfs.h>
+#include <globalvar.h>
 #include <gpio.h>
 #include <i2c/i2c.h>
 #include <init.h>
@@ -35,7 +36,7 @@ static int moduline_display_apply_overlay(char * dtbo) {
 	return 0;
 }
 
-static int gocontroll_moduline_display_som_probe(struct device_d *dev)
+static int gocontroll_moduline_display_som_probe(struct device *dev)
 {
 	struct i2c_adapter * i2c4;
 	struct i2c_client client;
@@ -70,8 +71,10 @@ static int gocontroll_moduline_display_som_probe(struct device_d *dev)
 
 	if (ret < 0) {
 		dtbo = __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av123z7m_n17_start;
+		globalvar_set("of.overlay.pattern", "*av123*.dtbo");
 	} else {
 		dtbo = __dtbo_imx8mp_tx8p_ml81_moduline_display_106_av101hdt_a10_start;
+		globalvar_set("of.overlay.pattern", "*av101*.dtbo");
 	}
 
 	ret = moduline_display_apply_overlay(dtbo);
