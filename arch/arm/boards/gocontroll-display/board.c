@@ -36,7 +36,7 @@ static int moduline_display_apply_overlay(char * dtbo) {
 	return 0;
 }
 
-static int gocontroll_moduline_display_som_probe(struct device *dev)
+static int gocontroll_moduline_display_probe(struct device *dev)
 {
 	struct i2c_adapter * i2c4;
 	struct i2c_client client;
@@ -88,9 +88,9 @@ static const struct of_device_id gocontroll_moduline_display_of_match[] = {
 	{ /* sentinel */ },
 };
 
-static struct driver_d gocontroll_moduline_display_driver = {
+static struct driver gocontroll_moduline_display_driver = {
 	.name = "GOcontroll Moduline Display",
-	.probe = gocontroll_moduline_display_som_probe,
+	.probe = gocontroll_moduline_display_probe,
 	.of_compatible = DRV_OF_COMPAT(gocontroll_moduline_display_of_match),
 };
 coredevice_platform_driver(gocontroll_moduline_display_driver);
