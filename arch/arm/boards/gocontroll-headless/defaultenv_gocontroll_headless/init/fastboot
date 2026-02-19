@@ -10,6 +10,7 @@ if [ "$bootsource" != "serial" ]; then
 	global autoboot_timeout=0
 	exit 0
 fi
+
 global autoboot=abort
 
 if [ test -f "/dev/mmc0.root" ]; then
