@@ -22,7 +22,7 @@ static const struct of_device_id gocontroll_moduline_headless_of_match[] = {
 	{ /* sentinel */ },
 };
 
-static struct driver_d gocontroll_moduline_headless_driver = {
+static struct driver gocontroll_moduline_headless_driver = {
 	.name = "GOcontroll Moduline Headless",
 	.probe = gocontroll_moduline_headless_probe,
 	.of_compatible = DRV_OF_COMPAT(gocontroll_moduline_headless_of_match),
