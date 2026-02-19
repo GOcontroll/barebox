@@ -8,7 +8,7 @@
 #include <envfs.h>
 
 
-static int tx8m_1610_som_probe(struct device *dev)
+static int gocontroll_moduline_headless_probe(struct device *dev)
 {
 	imx8m_bbu_internal_mmcboot_register_handler("emmc", "/dev/mmc0",
 												BBU_HANDLER_FLAG_DEFAULT);
@@ -16,16 +16,17 @@ static int tx8m_1610_som_probe(struct device *dev)
 	return 0;
 }
 
-static const struct of_device_id tx8m_1610_of_match[] = {
-	{ .compatible = "karo,imx8mm-tx8m-1610" },
+static const struct of_device_id gocontroll_moduline_headless_of_match[] = {
+	{ .compatible = "gocontroll,moduline-iv-306-d" },
+	{ .compatible = "gocontroll,moduline-mini-111" },
 	{ /* sentinel */ },
 };
 
-static struct driver_d tx8m_1610_som_driver = {
-	.name = "karo-tx8m-1610",
-	.probe = tx8m_1610_som_probe,
-	.of_compatible = DRV_OF_COMPAT(tx8m_1610_of_match),
+static struct driver_d gocontroll_moduline_headless_driver = {
+	.name = "GOcontroll Moduline Headless",
+	.probe = gocontroll_moduline_headless_probe,
+	.of_compatible = DRV_OF_COMPAT(gocontroll_moduline_headless_of_match),
 };
-coredevice_platform_driver(tx8m_1610_som_driver);
+coredevice_platform_driver(gocontroll_moduline_headless_driver);
 
-BAREBOX_DEEP_PROBE_ENABLE(tx8m_1610_of_match);
+BAREBOX_DEEP_PROBE_ENABLE(gocontroll_moduline_headless_of_match);
