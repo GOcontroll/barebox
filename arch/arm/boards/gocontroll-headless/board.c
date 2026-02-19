@@ -8,7 +8,7 @@
 #include <envfs.h>
 
 
-static int tx8m_1610_som_probe(struct device_d *dev)
+static int tx8m_1610_som_probe(struct device *dev)
 {
 	imx8m_bbu_internal_mmcboot_register_handler("emmc", "/dev/mmc0",
 												BBU_HANDLER_FLAG_DEFAULT);
